@@ -5,44 +5,53 @@ export default class UselessTextInput extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      numberOfOptions: [1, 2]
+      optionsArr: ['Option 1', 'Option 2']
     };
 
     this.onAddPress = this.onAddPress.bind(this);
     this.onRemovePress = this.onRemovePress.bind(this);
+    this.onChangeText = this.onChangeText.bind(this);
   }
 
   onAddPress () {
-    var options = this.state.numberOfOptions;
-    options.push(options[options.length - 1] + 1);
-    this.setState({numberOfOptions: options});
+    var options = this.state.optionsArr;
+    var num = options.length + 1;
+    options.push('Option ' + num);
+    this.setState({optionsArr: options});
   }
 
   onRemovePress () {
-    this.state.numberOfOptions.pop();
-    this.setState({numberOfOptions: this.state.numberOfOptions});
+    this.state.optionsArr.pop();
+    this.setState({optionsArr: this.state.optionsArr});
+  }
+
+  onChangeText (input, i) {
+    var options = this.state.optionsArr;
+    options[i] = input;
+    this.setState({optionsArr: options});
   }
 
   render() {
     return (
       <View>
         {
-          this.state.numberOfOptions.map((optionNum) => {
+          this.state.optionsArr.map((optionNum, i) => {
             return (
               <TextInput
                 style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-                onChangeText={(input) => this.setState({text1: input})}
-                value={'Option ' + optionNum} key={optionNum}
+                onChangeText={(input) => this.onChangeText(input, i)} value={this.state.optionsArr[i]} key={i}
+                placeholder={optionNum}
               />
             );
           })
         }
         {
-          this.state.numberOfOptions.length > 2
+          this.state.optionsArr.length > 2
             ? <Button onPress={this.onRemovePress} title="REMOVE" color="#841584" />
             : null
         }
         <Button onPress={this.onAddPress} title="ADD" color="#841584" />
+        <Button onPress={() => this.props.navigation.navigate('Decision', {options: 'me'})} title="Choose!" color="#841584"  />
 
       </View>
     );
