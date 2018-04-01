@@ -1,30 +1,17 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, Alert } from 'react-native';
-import InputInput from './components/InputInput';
+import { StackNavigator } from 'react-navigation';
+import HomeScreen from './components/Home';
+import InputScreen from './components/InputInput';
+import YesNoScreen from './components/YesOrNo';
+import HeadsTailScreen from './components/HeadsOrTails';
 
-export default class App extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text>What do you need to decide?</Text>
-        <Button
-          onPress={() => {
-            Alert.alert('You tapped the button!');
-          }}
-          title="Heads or Tails?"
-        />
-        <Text>Yes or No?</Text>
-        <Text>Input or Input?</Text>
-      </View>
-    );
-  }
-}
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+const App = StackNavigator({
+  Home: { screen: HomeScreen },
+  Input: { screen: InputScreen },
+  HeadsOrTails: {screen: HeadsTailScreen},
+  YesOrNo: {screen: YesNoScreen}
 });
+
+export default App;
