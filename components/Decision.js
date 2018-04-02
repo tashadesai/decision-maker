@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Button } from 'react-native';
 
 export default class HeadsOrTails extends React.Component {
   constructor(props) {
@@ -22,6 +22,8 @@ export default class HeadsOrTails extends React.Component {
       <View style={styles.container}>
         <Text>Decision:</Text>
         <Text>{this.decisionMaker(options)}</Text>
+        <Button onPress={() => this.forceUpdate()} title="Again" color="#841584" />
+        <Button onPress={() => this.props.navigation.goBack()} title="Change options" color="#841584" />
       </View>
     );
   }
@@ -30,7 +32,7 @@ export default class HeadsOrTails extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#303030',
     alignItems: 'center',
     justifyContent: 'center',
   },

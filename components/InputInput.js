@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { TextInput, View, Button, Alert } from 'react-native';
+import { TextInput, View, Button, Alert, StyleSheet } from 'react-native';
+import { Icon, ListItem, List, Body, Left, Right, Container } from 'native-base';
 
-export default class UselessTextInput extends Component {
+export default class Input extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -20,9 +21,9 @@ export default class UselessTextInput extends Component {
     this.setState({optionsArr: options});
   }
 
-  onRemovePress () {
-    this.state.optionsArr.pop();
-    this.setState({optionsArr: this.state.optionsArr});
+  onRemovePress (i) {
+    var options = this.state.optionsArr.slice(0, i).concat(this.state.optionsArr.slice(i + 1));
+    this.setState({optionsArr: options});
   }
 
   onChangeText (input, i) {
@@ -33,28 +34,42 @@ export default class UselessTextInput extends Component {
 
   render() {
     return (
-      <View>
+      <Container style={styles.container}>
+        <List>
         {
-          this.state.optionsArr.map((optionNum, i) => {
+          this.state.optionsArr.map((optionTxt, i) => {
             return (
-              <TextInput
-                style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-                onChangeText={(input) => this.onChangeText(input, i)} value={this.state.optionsArr[i]} key={i}
-                placeholder={optionNum}
-              />
+              <ListItem key={i} style={{borderColor: 'transparent'}}>
+                <Body>
+                  <TextInput
+                    style={{height: 40, borderColor: 'grey', borderWidth: 1}}
+                    onChangeText={(input) => this.onChangeText(input, i)}
+                    placeholder={'Option ' + (i + 1)}
+                    value={optionTxt.split(' ')[0] === 'Option' ? null : optionTxt}
+                  />
+                </Body>
+                <Right>
+                  {
+                    i > 1 ? <Icon name="close-circle" onPress={() => this.onRemovePress(i)} /> : null
+                  }
+                </Right>
+              </ListItem>
             );
           })
         }
-        {
-          this.state.optionsArr.length > 2
-            ? <Button onPress={this.onRemovePress} title="REMOVE" color="#841584" />
-            : null
-        }
-        <Button onPress={this.onAddPress} title="ADD" color="#841584" />
+        </List>
+        <Icon name="add" onPress={this.onAddPress} style={{color: '#b3feff', fontSize: 70, fontWeight: 'bold'}} />
         <Button onPress={() => this.props.navigation.navigate('Decision', {options: this.state.optionsArr})} title="Choose!" color="#841584"  />
 
-      </View>
+      </Container>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#303030',
+  },
+});
 
