@@ -51,7 +51,7 @@ export default class UselessTextInput extends Component {
             : null
         }
         <Button onPress={this.onAddPress} title="ADD" color="#841584" />
-        <Button onPress={() => this.props.navigation.navigate('Decision', {options: 'me'})} title="Choose!" color="#841584"  />
+        <Button onPress={() => this.props.navigation.navigate('Decision', {options: this.state.optionsArr})} title="Choose!" color="#841584"  />
 
       </View>
     );
