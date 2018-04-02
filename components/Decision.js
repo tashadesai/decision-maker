@@ -20,7 +20,7 @@ export default class HeadsOrTails extends React.Component {
 
     return (
       <View style={styles.container}>
-        <Text>Decision</Text>
+        <Text>Decision:</Text>
         <Text>{this.decisionMaker(options)}</Text>
       </View>
     );
