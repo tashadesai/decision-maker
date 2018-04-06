@@ -6,7 +6,8 @@ export default class Input extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      optionsArr: ['Option 1', 'Option 2']
+      optionsArr: ['Option 1', 'Option 2'],
+      currentlyAdding: ''
     };
 
     this.onAddPress = this.onAddPress.bind(this);
@@ -16,9 +17,11 @@ export default class Input extends Component {
 
   onAddPress () {
     var options = this.state.optionsArr;
-    var num = options.length + 1;
-    options.push('Option ' + num);
-    this.setState({optionsArr: options});
+    options.push(this.state.currentlyAdding);
+    this.setState({
+      optionsArr: options,
+      currentlyAdding: ''
+    });
   }
 
   onRemovePress (i) {
@@ -36,30 +39,40 @@ export default class Input extends Component {
     return (
       <Container style={styles.container}>
         <List>
-        {
-          this.state.optionsArr.map((optionTxt, i) => {
-            return (
-              <ListItem key={i} style={{borderColor: 'transparent'}}>
-                <Body>
-                  <TextInput
-                    style={{height: 40, borderColor: 'grey', borderWidth: 1}}
-                    onChangeText={(input) => this.onChangeText(input, i)}
-                    placeholder={'Option ' + (i + 1)}
-                    value={optionTxt.split(' ')[0] === 'Option' ? null : optionTxt}
-                  />
-                </Body>
-                <Right>
-                  {
-                    i > 1 ? <Icon name="close-circle" onPress={() => this.onRemovePress(i)} /> : null
-                  }
-                </Right>
-              </ListItem>
-            );
-          })
-        }
+          {
+            this.state.optionsArr.map((optionTxt, i) => {
+              return (
+                <ListItem key={i} style={{borderColor: 'white', alignItems: 'center'}}>
+                  <Body>
+                    <TextInput
+                      style={styles.txtInput}
+                      onChangeText={(input) => this.onChangeText(input, i)}
+                      placeholder={'Enter Option ' + (i + 1)} placeholderTextColor='grey'
+                      value={optionTxt.split(' ')[0] === 'Option' ? null : optionTxt}
+                    />
+                  </Body>
+                  <Icon name="close-circle" onPress={() => this.onRemovePress(i)} style={i > 1 ? styles.delIcon : styles.hiddenDel} />
+                </ListItem>
+              );
+            })
+          }
+          <ListItem style={{borderColor: 'white', alignItems: 'center'}}>
+            <Body>
+              <TextInput
+                style={styles.txtInput}
+                onChangeText={(input) => this.setState({currentlyAdding: input})}
+                placeholder={'Add another option'} placeholderTextColor='grey'
+                value={this.state.currentlyAdding}
+              />
+            </Body>
+            <Icon name="add" onPress={this.onAddPress} style={styles.plusIcon} />
+          </ListItem>
         </List>
-        <Icon name="add" onPress={this.onAddPress} style={{color: '#b3feff', fontSize: 70, fontWeight: 'bold'}} />
-        <Button onPress={() => this.props.navigation.navigate('Decision', {options: this.state.optionsArr})} title="Choose!" color="#841584"  />
+
+        <View style={styles.buttons}>
+
+          <Button onPress={() => this.props.navigation.navigate('Decision', {options: this.state.optionsArr})} title="MAKE A DECISION!" color="#8af8ff" />
+        </View>
 
       </Container>
     );
@@ -69,7 +82,32 @@ export default class Input extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#303030',
+    backgroundColor: '#303030'
   },
+  buttons: {
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  txtInput: {
+    height: 30,
+    color:'#8af8ff',
+    fontSize: 20,
+    borderRadius: 10
+  },
+  delIcon: {
+    color: 'pink',
+    fontSize: 40,
+    fontWeight: 'bold'
+  },
+  hiddenDel: {
+    color: 'transparent',
+    fontSize: 40,
+    fontWeight: 'bold'
+  },
+  plusIcon: {
+    color: '#8af8ff',
+    fontSize: 60,
+    fontWeight: 'bold'
+  }
 });
 
